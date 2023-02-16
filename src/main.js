@@ -12,11 +12,11 @@ const url = weatherConfig.url;
 const cities = weatherConfig.cities;
 const tableWeatherResults = new Table("table-section", "Weather", schema);
 const dataProcessor = new DataProcessor(url, cities);
-const dataForm = new DataForm(form - section, weatherConfig.maxDays, cities);
+const dataForm = new DataForm("form-section", weatherConfig.maxDays, cities);
 
 async function handleData(inputData) {
     const processData = await dataProcessor.getTemperatureData(inputData.city, inputData.dateFrom, inputData.dateTo, inputData.hourFrom, inputData.hourTo);
-    for (let i = 0; i < processData.lenght; i++) {
+    for (let i = 0; i < processData.length; i++) {
         tableWeatherResults.addRow(processData[i]);
     }   
 }

@@ -16,6 +16,7 @@ const HOUR_SET = 24;
 
 export class DataForm {
     #formElement;
+    #parentElement;
     #hourFromElement;
     #hourToElement;
     #setCityElement;
@@ -23,18 +24,18 @@ export class DataForm {
     #dateToElement;
     #inputElements;
     constructor(parentId, maxDays, cities) {
-        const parentElement = document.getElementById(parentId);
-        if (!parentFormElement) {
+        this.#parentElement = document.getElementById(parentId);
+        if (!this.#parentElement) {
             throw `wrong perrent ID ${parentId}`;
         }
-        this.#fillForm(parentElement);
+        this.#fillForm(this.#parentElement);
         this.#hourFromElement = document.getElementById(HOUR_FROM_ID);
         this.#hourToElement = document.getElementById(HOUR_TO_ID);
         this.#setCityElement = document.getElementById(SET_CITY_ID);
         this.#formElement = document.getElementById(FORM_ID);
         this.#dateToElement = document.getElementById(DATE_TO_ID);
         this.#dateFromElement = document.getElementById(DATE_FROM_ID);
-        this.#inputElements = document.querySelectorAll(`${FORM_ID} [name]`);
+        this.#inputElements = document.querySelectorAll(`#${FORM_ID} [name]`);
         this.#fillCities(cities);
         this.#fillHours(HOUR_SET);
         this.#setMinMaxDates(maxDays);
@@ -57,7 +58,7 @@ export class DataForm {
             </div>
 
             <div class="${CLASS_NAME_DIV_SELECT}">
-                <label for="${HOUR_TO_ID}" class="label-${HOUR_TO_ID}">Select City</label>
+                <label for="${HOUR_TO_ID}" class="label-${HOUR_TO_ID}">Choose hour to</label>
                 <select required name="${NAME_HOUR_TO}" id="${HOUR_TO_ID}" class="${CLASS_NAME_FORM_INPUT}">
                     <option value=""></option>                    
                 </select>
@@ -91,23 +92,28 @@ export class DataForm {
     }
 
     #fillCities(cities) {
-        this.#setCityElement.innerHTML = Object.keys(cities).map(value => { `<option value="${value}">${value}</option>` });
+        this.#setCityElement.innerHTML = Object.keys(cities).map(value => `<option value="${value}">${value}</option>`);
     }
 
     #fillHours(hours) {
-        this.#hourFromElement.innerHTML = Array(hours).map(_, id => { `<option value="${id}">${id}</option>` });
-        this.#hourToElement.innerHTML = Array(hours).map(_, id => { `<option value="${id}">${id}</option>` });
+        const res = [];
+        for(let i = 0; i < hours; i++) {
+            res.push(i);
+        }        
+        this.#hourFromElement.innerHTML = res.map((_, index) => `<option value="${index}">${index}</option>`);
+        this.#hourToElement.innerHTML = res.map((_, index) => `<option value="${index}">${index}</option>`);
     }
-
-    addHandler(handlerFunc){
+   
+    addHandler(handlerFunc) {
         this.#formElement.addEventListener("submit", async (event) => {
             event.preventDefault();
             const inputData = Array.from(this.#inputElements)
-            .reduce((res, val) => {
-                res[val.name] = val.value;
-                return res;
-            }, {});           
-        } )
+                .reduce((res, val) => {
+                    res[val.name] = val.value;
+                    return res;
+                }, {});
+                handlerFunc(inputData);
+        })
     }
 }
 
