@@ -1,34 +1,24 @@
 import { weatherConfig } from "./config/weather_config.js";
 import { DataProcessor } from "./service/dataProcessor.js";
 import { DataForm } from "./ui/data-form.js";
+import { Table } from "./ui/table.js";
 
 const schema = [
-    {columnName: 'Date', fieldName: 'date'},
-    {columnName: 'Hour', fieldName: 'hour'},
-    {columnName: "Temperature", fieldName: 'temperature'},   
-]
-
-const tableWeatherResults = new Table("table-section", "Weather", schema);
-
+    { columnName: 'Date', fieldName: 'date' },
+    { columnName: 'Hour', fieldName: 'hour' },
+    { columnName: "Temperature", fieldName: 'temperature' },
+];
 const url = weatherConfig.url;
 const cities = weatherConfig.cities;
+const tableWeatherResults = new Table("table-section", "Weather", schema);
 const dataProcessor = new DataProcessor(url, cities);
-const dataForm = new DataForm(form-section, weatherConfig.maxDays, cities);
-// async function displayTemperatures() {
-//     const data = await dataProcessor.getTemperatureData("Haifa", "2023-02-14", "2023-02-15", "10", "12");
-//     console.log(data);
-// }
-// displayTemperatures();
+const dataForm = new DataForm(form - section, weatherConfig.maxDays, cities);
 
-async function handleData(videoData) {
-    const message = checkPlayingTime(videoData.playingTime);
-    if(!message) {
-        videoPlayer.setUrl(videoData.selectedVideo);
-        videoPlayer.start();
-        await sleep(videoData.playingTime * 1000);
-        videoPlayer.stop();
-    }
-    return message;
+async function handleData(inputData) {
+    const processData = await dataProcessor.getTemperatureData(inputData.city, inputData.dateFrom, inputData.dateTo, inputData.hourFrom, inputData.hourTo);
+    for (let i = 0; i < processData.lenght; i++) {
+        tableWeatherResults.addRow(processData[i]);
+    }   
 }
 
 dataForm.addHandler(handleData);

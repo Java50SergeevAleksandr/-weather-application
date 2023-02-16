@@ -106,11 +106,7 @@ export class DataForm {
             .reduce((res, val) => {
                 res[val.name] = val.value;
                 return res;
-            }, {});
-            const message = await handlerFunc(inputData);
-            if(message) {
-                alert(message);
-            }
+            }, {});           
         } )
     }
 }
