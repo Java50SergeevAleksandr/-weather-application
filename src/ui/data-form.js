@@ -37,8 +37,23 @@ export class DataForm {
         this.#dateFromElement = document.getElementById(DATE_FROM_ID);
         this.#inputElements = document.querySelectorAll(`#${FORM_ID} [name]`);
         this.#fillCities(cities);
-        this.#fillHours(HOUR_SET);
+        this.#fillHours(HOUR_SET, 0, this.#hourFromElement);
+        this.#fillHours(HOUR_SET, 0, this.#hourToElement);
         this.#setMinMaxDates(maxDays);
+        this.#dateToElement.addEventListener('change', () => this.#dateFromElement.max = this.#dateToElement.value);
+        this.#dateFromElement.addEventListener('change', () => this.#dateToElement.min = this.#dateFromElement.value);
+        this.#hourToElement.addEventListener('change', () => {
+           if(this.#hourFromElement.value == 0) {
+               this.#fillHours(+this.#hourToElement.value + 1, 0, this.#hourFromElement)};
+            // this.#hourFromElement.removeEventListener('change', );
+            this.#hourToElement.disabled = true;
+        });
+        this.#hourFromElement.addEventListener('change', () => {            
+           if(this.#hourToElement.value == 0) {
+               this.#fillHours((HOUR_SET - +this.#hourToElement.value), +this.#hourFromElement.value, this.#hourToElement);
+            this.#hourToElement.value = this.#hourFromElement.value;}
+            this.#hourFromElement.disabled = true;
+        });
     }
 
     #fillForm(parentElement) {
@@ -95,15 +110,16 @@ export class DataForm {
         this.#setCityElement.innerHTML = Object.keys(cities).map(value => `<option value="${value}">${value}</option>`);
     }
 
-    #fillHours(hours) {
+    #fillHours(hours, hourseFrom, element) {
         const res = [];
-        for(let i = 0; i < hours; i++) {
+        let i = hourseFrom;
+        for (i; i < hours; i++) {
             res.push(i);
-        }        
-        this.#hourFromElement.innerHTML = res.map((_, index) => `<option value="${index}">${index}</option>`);
-        this.#hourToElement.innerHTML = res.map((_, index) => `<option value="${index}">${index}</option>`);
+        }
+        element.innerHTML = res.map((value, index) => `<option value="${value}">${value}</option>`);
     }
-   
+
+
     addHandler(handlerFunc) {
         this.#formElement.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -112,7 +128,7 @@ export class DataForm {
                     res[val.name] = val.value;
                     return res;
                 }, {});
-                handlerFunc(inputData);
+            handlerFunc(inputData);
         })
     }
 }
