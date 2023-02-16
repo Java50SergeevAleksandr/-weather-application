@@ -7,6 +7,10 @@ export class Table {
         if (!parentElement) {
             throw `wrong parentId ${parentId}`
         }
+        this.#fillForm(parentElement, tableName, schema);       
+        this.#tbodyElement = document.getElementById(tableName);
+    }
+    #fillForm(parentElement, tableName, schema) {
         parentElement.innerHTML = ` <h3 class="table-logo">${tableName} </h3>
         <table >
             <thead>
@@ -18,7 +22,10 @@ export class Table {
                
             </tbody>
         </table>`
-        this.#tbodyElement = document.getElementById(tableName);
+        
+    }
+    clearTable() {
+        this.#tbodyElement.innerHTML = "";
     }
     addRow(object) {
         this.#tbodyElement.innerHTML += getRow(object, this.#schema);

@@ -15,6 +15,7 @@ const dataProcessor = new DataProcessor(url, cities);
 const dataForm = new DataForm("form-section", weatherConfig.maxDays, cities);
 
 async function handleData(inputData) {
+    tableWeatherResults.clearTable();
     const processData = await dataProcessor.getTemperatureData(inputData.city, inputData.dateFrom, inputData.dateTo, inputData.hourFrom, inputData.hourTo);
     for (let i = 0; i < processData.length; i++) {
         tableWeatherResults.addRow(processData[i]);
