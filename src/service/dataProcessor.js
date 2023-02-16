@@ -40,6 +40,6 @@ function processRawData(rawData, hourFrom, hourTo) {
 function getHoursElements(array, hourFrom, hourTo) {
     return array.filter((__, index) => {
         const hour = index % 24;
-        return hour >= hourFrom && hour <= hourTo
+        return hour >= +hourFrom && hour <= +hourTo
     })
 }
