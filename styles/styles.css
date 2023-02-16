@@ -17,6 +17,13 @@ body {
     align-items: center;
 
 }
+.div-input {
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .colored {
     background-color: rgb(66, 144, 207);
     color: white;
@@ -34,8 +41,14 @@ body {
 .hidden {
     display: none;
 }
-.tab-button {
-    margin-bottom: 2vh;
+.form-buttons {
+    margin-top: 2vh;
+}
+.inp-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
 }
 
 table, th, td {

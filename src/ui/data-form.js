@@ -71,7 +71,8 @@ export class DataForm {
 
             <label for="${DATE_TO_ID}" class="label-${DATE_TO_ID}">Choose date to</label>
             <input required name="${NAME_DATE_TO}" type="date" id="${DATE_TO_ID}" class="${CLASS_NAME_FORM_INPUT}">
-
+            <section class="div-input">
+            <div class="inp-text">
             <div class="${CLASS_NAME_DIV_SELECT}">
                 <label for="${HOUR_FROM_ID}" class="label-${HOUR_FROM_ID}">Choose hour from</label>
                 <select required name="${NAME_HOUR_FROM}" id="${HOUR_FROM_ID}" class="${CLASS_NAME_FORM_INPUT}">
@@ -92,11 +93,12 @@ export class DataForm {
                     <option value=""></option>                    
                 </select>
             </div>
-            
+            </div>
             <div class="${CLASS_NAME_DIV_BUTTONS}">
                 <button type="submit">Submit</button>
                 <button type="reset">Reset</button>
             </div>
+            </section>
         </form>`
     }
 
