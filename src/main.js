@@ -1,5 +1,6 @@
 import { weatherConfig } from "./config/weather_config.js";
 import { DataProcessor } from "./service/dataProcessor.js";
+import { DataForm } from "./ui/data-form.js";
 
 const schema = [
     {columnName: 'Date', fieldName: 'date'},
@@ -12,6 +13,7 @@ const tableWeatherResults = new Table("table-section", "Weather", schema);
 const url = weatherConfig.url;
 const cities = weatherConfig.cities;
 const dataProcessor = new DataProcessor(url, cities);
+const dataForm = new DataForm(form-section, weatherConfig.maxDays, cities);
 // async function displayTemperatures() {
 //     const data = await dataProcessor.getTemperatureData("Haifa", "2023-02-14", "2023-02-15", "10", "12");
 //     console.log(data);
@@ -29,4 +31,4 @@ async function handleData(videoData) {
     return message;
 }
 
-inputForm.addHandler(handleData);
+dataForm.addHandler(handleData);

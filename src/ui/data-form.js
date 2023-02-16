@@ -21,6 +21,7 @@ export class DataForm {
     #setCityElement;
     #dateFromElement;
     #dateToElement;
+    #inputElements;
     constructor(parentId, maxDays, cities) {
         const parentElement = document.getElementById(parentId);
         if (!parentFormElement) {
@@ -33,6 +34,7 @@ export class DataForm {
         this.#formElement = document.getElementById(FORM_ID);
         this.#dateToElement = document.getElementById(DATE_TO_ID);
         this.#dateFromElement = document.getElementById(DATE_FROM_ID);
+        this.#inputElements = document.querySelectorAll(`${FORM_ID} [name]`);
         this.#fillCities(cities);
         this.#fillHours(HOUR_SET);
         this.#setMinMaxDates(maxDays);
@@ -96,4 +98,20 @@ export class DataForm {
         this.#hourFromElement.innerHTML = Array(hours).map(_, id => { `<option value="${id}">${id}</option>` });
         this.#hourToElement.innerHTML = Array(hours).map(_, id => { `<option value="${id}">${id}</option>` });
     }
+
+    addHandler(handlerFunc){
+        this.#formElement.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const inputData = Array.from(this.#inputElements)
+            .reduce((res, val) => {
+                res[val.name] = val.value;
+                return res;
+            }, {});
+            const message = await handlerFunc(inputData);
+            if(message) {
+                alert(message);
+            }
+        } )
+    }
 }
+
