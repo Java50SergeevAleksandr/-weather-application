@@ -40,26 +40,31 @@ export class DataForm {
         this.#fillHours(HOUR_SET, 0, this.#hourFromElement);
         this.#fillHours(HOUR_SET, 0, this.#hourToElement);
         this.#setMinMaxDates(maxDays);
+        
+        let handlerHourToBind = () => {
+            this.#fillHours(+this.#hourToElement.value + 1, 0, this.#hourFromElement);
+            this.#hourFromElement.removeEventListener('change', handlerHourFromBind);
+            this.#hourToElement.removeEventListener('change', handlerHourToBind);
+        }
+        let handlerHourFromBind = () => {
+            this.#fillHours((HOUR_SET - +this.#hourToElement.value), +this.#hourFromElement.value, this.#hourToElement);
+            this.#hourToElement.value = this.#hourFromElement.value;
+            this.#hourToElement.removeEventListener('change', handlerHourToBind);
+            this.#hourFromElement.removeEventListener('change', handlerHourFromBind);
+        }
+        this.#dateToElement.addEventListener('change', () => this.#dateFromElement.max = this.#dateToElement.value);
+        this.#dateFromElement.addEventListener('change', () => this.#dateToElement.min = this.#dateFromElement.value);
+        this.#hourToElement.addEventListener('change', handlerHourToBind);
+        this.#hourFromElement.addEventListener('change', handlerHourFromBind);
+
         this.#formElement.addEventListener('reset', (event) => {
             this.#hourToElement.disabled = false;
             this.#hourFromElement.disabled = false;
             this.#fillHours(HOUR_SET, 0, this.#hourToElement);
             this.#fillHours(HOUR_SET, 0, this.#hourFromElement);
             this.#setMinMaxDates(maxDays);
-        });
-        this.#dateToElement.addEventListener('change', () => this.#dateFromElement.max = this.#dateToElement.value);
-        this.#dateFromElement.addEventListener('change', () => this.#dateToElement.min = this.#dateFromElement.value);
-        this.#hourToElement.addEventListener('change', () => {
-           if(this.#hourFromElement.value == 0) {
-               this.#fillHours(+this.#hourToElement.value + 1, 0, this.#hourFromElement)};
-            // this.#hourFromElement.removeEventListener('change', );
-            this.#hourToElement.disabled = true;
-        });
-        this.#hourFromElement.addEventListener('change', () => {            
-           if(this.#hourToElement.value == 0) {
-               this.#fillHours((HOUR_SET - +this.#hourToElement.value), +this.#hourFromElement.value, this.#hourToElement);
-            this.#hourToElement.value = this.#hourFromElement.value;}
-            this.#hourFromElement.disabled = true;
+            this.#hourToElement.addEventListener('change', handlerHourToBind);
+            this.#hourFromElement.addEventListener('change', handlerHourFromBind);
         });
     }
 
