@@ -40,6 +40,13 @@ export class DataForm {
         this.#fillHours(HOUR_SET, 0, this.#hourFromElement);
         this.#fillHours(HOUR_SET, 0, this.#hourToElement);
         this.#setMinMaxDates(maxDays);
+        this.#formElement.addEventListener('reset', (event) => {
+            this.#hourToElement.disabled = false;
+            this.#hourFromElement.disabled = false;
+            this.#fillHours(HOUR_SET, 0, this.#hourToElement);
+            this.#fillHours(HOUR_SET, 0, this.#hourFromElement);
+            this.#setMinMaxDates(maxDays);
+        });
         this.#dateToElement.addEventListener('change', () => this.#dateFromElement.max = this.#dateToElement.value);
         this.#dateFromElement.addEventListener('change', () => this.#dateToElement.min = this.#dateFromElement.value);
         this.#hourToElement.addEventListener('change', () => {
@@ -129,6 +136,7 @@ export class DataForm {
                     return res;
                 }, {});
             handlerFunc(inputData);
+            this.#formElement.reset();
         })
     }
 }
